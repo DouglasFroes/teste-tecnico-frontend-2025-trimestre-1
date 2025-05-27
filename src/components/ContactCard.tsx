@@ -78,10 +78,18 @@ export default function ContactCard({ contact, onEdit, onDelete }: ContactCardPr
           </div>
         </div>
       </section>
-      <button
-        className="bg-red-500 hover:bg-red-600 text-white rounded px-2 py-1 mt-2 self-end text-xs"
-        onClick={() => onDelete(contact.id)}
-      >Excluir</button>
+      <div className="flex justify-end gap-2 mt-2">
+        <button
+          className="flex items-center gap-1 bg-gradient-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 text-white rounded-full px-4 py-2 text-xs font-semibold shadow transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-400"
+          onClick={e => {
+            e.stopPropagation();
+            onDelete(contact.id);
+          }}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+          Excluir
+        </button>
+      </div>
     </li>
   );
 }
