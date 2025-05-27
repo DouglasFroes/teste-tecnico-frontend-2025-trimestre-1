@@ -27,34 +27,9 @@ export default function Home() {
         </section>
       </main>
       <footer className="mt-10 text-center text-xs text-gray-500 dark:text-gray-400">
-        <div className="flex flex-wrap gap-4 justify-center items-center">
-          <a
-            className="hover:underline"
-            href="https://nextjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Next.js
-          </a>
-          <a
-            className="hover:underline"
-            href="https://zustand-demo.pmnd.rs/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Zustand
-          </a>
-          <a
-            className="hover:underline"
-            href="https://github.com/filipedeschamps/cep-promise"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            cep-promise
-          </a>
-        </div>
+
         <div className="mt-2">
-          Desafio técnico 2025 &copy; Eai-Pago
+          Desafio técnico 2025 &copy; Eai-Pago - DouglasFroes
         </div>
       </footer>
       <Toast />
