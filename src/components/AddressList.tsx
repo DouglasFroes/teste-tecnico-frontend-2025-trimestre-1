@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useAddressStore } from '../stores/useAddressStore';
 import { useToastStore } from '../stores/useToast';
 
@@ -17,11 +17,14 @@ export default function AddressList() {
   const cities = Array.from(new Set(contacts.map(c => c.address.city))).sort();
   const states = Array.from(new Set(contacts.map(c => c.address.state))).sort();
 
-  const filtered = contacts.filter(c =>
-    (!filter || c.displayName.toLowerCase().includes(filter.toLowerCase())) &&
-    (!cityFilter || c.address.city === cityFilter) &&
-    (!stateFilter || c.address.state === stateFilter)
-  );
+
+  const data = useMemo(() => {
+    return contacts.filter(c =>
+      (!filter || c.displayName.toLowerCase().includes(filter.toLowerCase())) &&
+      (!cityFilter || c.address.city === cityFilter) &&
+      (!stateFilter || c.address.state === stateFilter)
+    );
+  }, [contacts, filter, cityFilter, stateFilter]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -53,11 +56,11 @@ export default function AddressList() {
           ))}
         </select>
       </div>
-      {filtered.length === 0 ? (
+      {data.length === 0 ? (
         <div className="mt-8 text-center text-gray-500">Nenhum contato encontrado.</div>
       ) : (
         <ul className="space-y-4">
-          {filtered.map((c) => (
+          {data.map((c) => (
             <li key={c.id} className="border rounded-xl p-4 flex flex-col gap-2 bg-white dark:bg-gray-800 shadow transition hover:shadow-lg">
               <div className="flex flex-wrap gap-2 items-center justify-between">
                 <span className="font-bold text-blue-700 dark:text-blue-200">Usuário:</span>
