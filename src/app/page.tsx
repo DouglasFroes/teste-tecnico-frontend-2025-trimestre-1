@@ -1,6 +1,6 @@
+import CreateContactModal from "@/components/CreateContactModal";
 import Toast from "@/components/Toast";
 import AddressList from "../components/AddressList";
-import CreateContactModal from "../components/CreateContactModal";
 
 export default function Home() {
   return (
@@ -15,13 +15,14 @@ export default function Home() {
         </p>
       </header>
       <main className="w-full max-w-2xl mx-auto flex flex-col gap-8 items-center">
-        <section className="w-full bg-white dark:bg-gray-900 rounded-xl shadow p-6 mb-2 flex flex-col items-center">
-          <CreateContactModal />
-        </section>
+
         <section className="w-full bg-white dark:bg-gray-900 rounded-xl shadow p-6">
-          <h2 className="text-xl font-semibold mb-4 text-blue-800 dark:text-blue-200">
-            Contatos cadastrados
-          </h2>
+          <div className="flex flex-col sm:flex-row items-center justify-between mb-6">
+            <h2 className="text-xl font-semibold mb-4 text-blue-800 dark:text-blue-200">
+              Contatos cadastrados
+            </h2>
+            <CreateContactModal />
+          </div>
           <AddressList />
         </section>
       </main>
