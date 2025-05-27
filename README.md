@@ -1,3 +1,7 @@
+Horario de Inicio: 05/07/2025 - 08:05  
+Horario de Fim: 05/07/2025 - 13:00  
+Nome de usuário: DouglasFroes
+
 # teste-tecnico-frontend-2025-trimestre-1
 Teste técnico para a posição de Frontend Dev. Edição do primeiro trimestre de 2025.
 
