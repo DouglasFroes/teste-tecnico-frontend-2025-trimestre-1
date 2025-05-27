@@ -1,29 +1,36 @@
 'use client';
 
+import { fetchAddressByCep } from "@/services/cepService";
 import React, { useState } from "react";
 import { useAddressStore } from "../stores/useAddressStore";
 import { useToastStore } from "../stores/useToast";
 
 export default function CreateContactModal() {
   const [open, setOpen] = useState(false);
-  const [user, setUser] = useState("");
-  const [displayName, setDisplayName] = useState("");
-  const [cep, setCep] = useState("");
-  const { addContact, loading, error, clearError } = useAddressStore();
+  const [user, setUser] = useState('');
+  const [displayName, setDisplayName] = useState('');
+  const [cep, setCep] = useState('');
+  const { addContact } = useAddressStore();
+  const [loading, setLoading] = useState(false);
+
   const { onMessage } = useToastStore();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      await addContact(user, displayName, cep);
-      onMessage({ message: "Contato adicionado com sucesso!", type: "success" });
-      setUser("");
-      setDisplayName("");
-      setCep("");
-      setOpen(false);
-    } catch {
-      onMessage({ message: "Erro ao adicionar contato.", type: "error" });
+    setLoading(true);
+    const result = await fetchAddressByCep(cep);
+    if (result.type === 'error') {
+      onMessage({ message: result.message, type: 'error' });
+      setLoading(false);
+      return;
     }
+    await addContact(user, displayName, result.address);
+    onMessage({ message: 'Contato adicionado com sucesso!', type: 'success' });
+    setUser('');
+    setDisplayName('');
+    setCep('');
+    setLoading(false);
+    setOpen(false);
   };
 
   return (
@@ -66,6 +73,9 @@ export default function CreateContactModal() {
                 value={cep}
                 onChange={e => setCep(e.target.value)}
                 required
+                type="text"
+                pattern="\d{5}-?\d{3}"
+                title="Formato: 12345-678 ou 12345678"
               />
               <button
                 type="submit"
@@ -74,11 +84,6 @@ export default function CreateContactModal() {
               >
                 {loading ? 'Buscando...' : 'Adicionar contato'}
               </button>
-              {error && (
-                <div className="bg-red-100 text-red-700 p-2 rounded" onClick={clearError}>
-                  {error}
-                </div>
-              )}
             </form>
           </div>
         </div>
