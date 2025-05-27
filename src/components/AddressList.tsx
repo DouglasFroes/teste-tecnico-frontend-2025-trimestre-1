@@ -3,12 +3,11 @@
 import { useMemo, useState } from 'react';
 import { useAddressStore } from '../stores/useAddressStore';
 import { useToastStore } from '../stores/useToast';
+import ContactCard from './ContactCard';
 
 export default function AddressList() {
   const { contacts, removeContact, editDisplayName } = useAddressStore();
   const { onMessage } = useToastStore();
-  const [editId, setEditId] = useState<string | null>(null);
-  const [newName, setNewName] = useState('');
   const [filter, setFilter] = useState('');
   const [cityFilter, setCityFilter] = useState('');
   const [stateFilter, setStateFilter] = useState('');
@@ -16,6 +15,16 @@ export default function AddressList() {
   // Unique cities and states for filter dropdowns
   const cities = Array.from(new Set(contacts.map(c => c.address.city))).sort();
   const states = Array.from(new Set(contacts.map(c => c.address.state))).sort();
+
+  function handleDeleteContact(id: string) {
+    removeContact(id);
+    onMessage({ message: 'Contato excluído com sucesso!', type: 'success' });
+  }
+
+  function handleEditDisplayName(id: string, newName: string) {
+    editDisplayName(id, newName);
+    onMessage({ message: 'Nome de exibição atualizado com sucesso!', type: 'info' });
+  }
 
 
   const data = useMemo(() => {
@@ -73,61 +82,12 @@ export default function AddressList() {
       ) : (
         <ul className="space-y-4">
           {data.map((c) => (
-            <li key={c.id} className="border rounded-xl p-4 flex flex-col gap-2 bg-white dark:bg-gray-800 shadow transition hover:shadow-lg">
-              <div className="flex flex-wrap gap-2 items-center justify-between">
-                <span className="font-bold text-blue-700 dark:text-blue-200">Usuário:</span>
-                <span className="text-gray-800 dark:text-gray-100">{c.user}</span>
-              </div>
-              <div className="flex flex-wrap gap-2 items-center">
-                <span className="font-bold text-blue-700 dark:text-blue-200">Nome:</span>
-                {editId === c.id ? (
-                  <>
-                    <input
-                      className="border p-1 rounded text-sm"
-                      value={newName}
-                      onChange={e => setNewName(e.target.value)}
-                    />
-                    <button
-                      className="bg-green-500 text-white rounded px-2 py-1 ml-2 text-xs"
-                      onClick={() => {
-                        editDisplayName(c.id, newName);
-                        setEditId(null);
-                      }}
-                    >Salvar</button>
-                    <button
-                      className="ml-2 text-gray-500 text-xs"
-                      onClick={() => setEditId(null)}
-                    >Cancelar</button>
-                  </>
-                ) : (
-                  <>
-                    <span className="text-gray-800 dark:text-gray-100">{c.displayName}</span>
-                    <button
-                      className="ml-2 text-blue-600 underline text-xs"
-                      onClick={() => {
-                        setEditId(c.id);
-                        setNewName(c.displayName);
-                      }}
-                    >Editar</button>
-                  </>
-                )}
-              </div>
-              <div className="flex flex-wrap gap-2 items-center">
-                <span className="font-bold text-blue-700 dark:text-blue-200">CEP:</span>
-                <span className="text-gray-800 dark:text-gray-100">{c.cep}</span>
-              </div>
-              <div className="flex flex-wrap gap-2 items-center">
-                <span className="font-bold text-blue-700 dark:text-blue-200">Endereço:</span>
-                <span className="text-gray-800 dark:text-gray-100">{c.address.street}, {c.address.neighborhood}, {c.address.city} - {c.address.state}</span>
-              </div>
-              <button
-                className="bg-red-500 hover:bg-red-600 text-white rounded px-2 py-1 mt-2 self-end text-xs"
-                onClick={() => {
-                  removeContact(c.id);
-                  onMessage({ message: 'Contato excluído com sucesso!', type: 'success' });
-                }}
-              >Excluir</button>
-            </li>
+            <ContactCard
+              key={c.id}
+              contact={c}
+              onEdit={handleEditDisplayName}
+              onDelete={handleDeleteContact}
+            />
           ))}
         </ul>
       )}

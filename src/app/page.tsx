@@ -4,7 +4,7 @@ import AddressList from "../components/AddressList";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 dark:from-gray-900 dark:to-gray-800 flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen w-screen bg-gradient-to-br from-blue-50 to-blue-200 dark:from-gray-900 dark:to-gray-800 flex flex-col items-center justify-center p-4">
       <header className="w-full max-w-2xl mx-auto flex flex-col items-center gap-2 py-8">
         <h1 className="text-3xl sm:text-4xl font-bold text-blue-900 dark:text-white mt-2 mb-1 text-center">
           Agenda de Endereços

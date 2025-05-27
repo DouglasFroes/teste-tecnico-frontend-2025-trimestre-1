@@ -24,7 +24,7 @@ export default function CreateContactModal() {
       setLoading(false);
       return;
     }
-    await addContact(user, displayName, result.address);
+    addContact(user, displayName, result.address);
     onMessage({ message: 'Contato adicionado com sucesso!', type: 'success' });
     setUser('');
     setDisplayName('');
